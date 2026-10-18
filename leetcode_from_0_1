@@ -1,0 +1,30 @@
+class Solution1:
+    def mergeAlternately(self, word1: str, word2: str) -> str:
+        # 先判断哪个短，然后遍历交替添加；再次判断哪个剩下来加到末尾
+        
+        min_len = min(len(word1), len(word2))
+        newstr = []
+
+        for i in range(min_len):
+            newstr.append(word1[i])
+            newstr.append(word2[i])
+        
+        if len(word1)>len(word2):
+            newstr = newstr+ list(word1[min_len:])
+
+        else:
+            newstr = newstr+ list(word2[min_len:])
+
+        return("".join(newstr))
+
+    def elegant(self, word1: str, word2: str) -> str:
+        # 不用判断，直接打包循环遍历，最后直接加
+
+        res = []
+        for c1, c2 in zip(word1, word2):
+            res.append(c1 + c2)
+        # 拼接配对部分 + 两个字符串剩余尾部（其中一个一定是空）
+        return "".join(res) + word1[len(word2):] + word2[len(word1):]
+
+
+    
