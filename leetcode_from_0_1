@@ -27,4 +27,99 @@ class Solution1:
         return "".join(res) + word1[len(word2):] + word2[len(word1):]
 
 
-    
+
+"""
+给定两个字符串 s 和 t ，它们只包含小写字母。
+字符串 t 由字符串 s 随机重排，然后在随机位置添加一个字母。
+请找出在 t 中被添加的字母。
+"""
+#统计每个字母出现次数，找出 t 比 s 多 1 次的字符：
+#利用Counter创建统计字典
+from collections import Counter
+class Solution2:
+    def findTheDifference(self, s: str, t: str) -> str:
+        cns = Counter(s)
+        cnt = Counter(t)
+        for char, num in cnt.items():
+            if cns[char] != num :
+                return char
+
+
+"""
+28. 找出字符串中第一个匹配项的下标
+"""
+#先判断是否是子字符串
+def strStr(self, haystack: str, needle: str) -> int:
+        return haystack.find(needle)
+"""
+```
+str.find(sub, start=0, end=len(str))
+- `str`：主字符串（haystack）
+- `sub`：要查找的子串（needle）
+- `start`【可选】：从哪个下标开始查找，默认 0
+- `end`【可选】：查找截止下标（不包含 end）
+"""
+#kmp算法
+def strStr_kmp(self, haystack: str, needle: str) -> int:
+        def getnext(str):
+            str = len(str)
+            nextarr = [0]*m
+            j=0
+            for i in range(1,m):
+                while j>0 and str[i]!=str[j]:
+                    j = nextarr[j-1]
+
+                if str[i]==str[j]:
+                    j+=1
+                    nextarr[i]=j
+            return nextarr
+        n, m = len(haystack), len(needle)
+        if m == 0: return 0
+        next_arr = getNext(needle)
+        j=0
+        for i in range(n):
+        # 失配，j回退
+            while j>0 and haystack[i] != needle[j]:
+                j = next_arr[j-1]
+            if haystack[i]==needle[j]:
+                j +=1
+        # j走完子串，匹配成功
+            if j == m:
+                return i - m +1
+        return -1
+
+"""
+242. 有效的字母异位词
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的 字母异位词。
+"""
+# 优化思路
+# 1. 使用字典统计每个字符出现的次数
+# 2. 遍历两个字符串，比较字符出现次数是否一致
+def solution242(s: str, t: str) -> bool:
+    if len(s) != len(t):
+        return False
+    count = {}
+    for char in s:
+        count[char] = count.get(char, 0) + 1  # 计数有返回次数，没有返回0
+    for char in t:
+        if char not in count:
+            return False
+        count[char] -= 1
+        if count[char] < 0:
+            return False
+    return True
+
+"""
+给定一个非空的字符串 s ，检查是否可以通过由它的一个子串重复多次构成。
+"""
+def solution459(s: str) -> bool:
+    # 1. 先判断字符串长度是否为1，如果是，直接返回True
+    if len(s) == 1:
+        return True
+    # 2. 遍历字符串的前一半长度，判断是否存在重复子串
+    for i in range(1, len(s) // 2 + 1):
+        if len(s) % i == 0:  # 如果长度可以整除
+            if s[:i] * (len(s) // i) == s:  # 判断重复子串是否等于原字符串
+                return True
+    return False
+
