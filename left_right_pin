@@ -1,0 +1,58 @@
+"""
+给你一个下标从 1 开始的整数数组 numbers ，该数组已按 非递减顺序排列。
+
+请你从数组中找出满足相加之和等于目标数 target 的 两个 数。
+"""
+def twoSum(self, numbers: list[int], target: int) -> list[int]:
+        left, right = 0, len(numbers)-1
+        while left<right:
+            s = numbers[left] + numbers[right]
+            if s == target:
+                return left, right
+            if s < target:
+                left +=1
+            if s > target:
+                right -=1
+
+"""
+给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+
+找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+
+返回容器可以储存的最大水量。
+"""
+def maxArea(self, height: list[int]) -> int:
+        left = 0
+        right = len(height) - 1   # 改这里！
+        max_s = 0  # 保存最大面积
+        while left < right:
+            w = right - left
+            h = min(height[left], height[right])
+            s = w * h
+            if s > max_s:
+                max_s = s
+            # 移动矮的一侧
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+        return max_s
+
+"""
+给你一个按 非递减顺序 排序的整数数组 nums，返回 每个数字的平方 组成的新数组，要求也按 非递减顺序 排序。
+"""
+
+def sortedSquares(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        ans = [0] * n
+        i, j = 0, n - 1
+        for p in range(n - 1, -1, -1):
+            x = nums[i] * nums[i]
+            y = nums[j] * nums[j]
+            if x > y:  # 更大的数放右边
+                ans[p] = x
+                i += 1
+            else:
+                ans[p] = y
+                j -= 1
+        return ans
