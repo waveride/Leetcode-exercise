@@ -56,3 +56,48 @@ def sortedSquares(self, nums: List[int]) -> List[int]:
                 ans[p] = y
                 j -= 1
         return ans
+
+
+"""
+给定一个含有 n 个正整数的数组和一个正整数 target 。
+
+找出该数组中满足其总和大于等于 target 的长度最小的 子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
+"""
+# # 1. 初始化：左指针`left=0`，当前窗口和`current_sum=0`，最小长度`min_len`设为一个极大值（比如数组长度 + 1，用来最后判断是否找到解）
+# 2. 遍历右指针`right`，逐个将元素加入窗口：
+#    -将`nums[right]`加到`current_sum`
+#    - 只要`current_sum >= target`，就循环收缩左边界：
+#      - 计算当前窗口长度`right - left + 1`，更新最小长度
+#      - 移出左指针指向的元素，`left`右移一位
+#      - 重复判断，直到窗口和 < target
+# 3. 最终：如果`min_len`还是初始极大值，说明无解返回 0；否则返回`min_len`
+def minSubArrayLen(self, target: int, nums: list[int]) -> int:
+        left = 0
+        right = 0
+        sum = 0
+        min_len = len(nums)+1
+        for right in range(len(nums)):
+            sum = sum + nums[right]
+            while sum >= target:
+                min_len = min(min_len, right - left+1)
+                sum = sum - nums[left]
+                left +=1
+        return 0 if min_len == len(nums) + 1 else min_len
+
+"""
+给定一个字符串 s ，请你找出其中不含有重复字符的 最长 子串 的长度。
+"""
+# 如果 s[right] 已经在窗口里，不断右移 left，直到把重复字符挤出去
+def lengthOfLongestSubstring(self, s: str) -> int:
+        n = len(s)
+        left = 0
+        charset = set()
+        max_len = 0
+        for right in range(n):
+            while s[right] in charset :
+                charset.remove(s[left])
+                left +=1
+
+            charset.add(s[right])
+            max_len = max(max_len, right - left +1)
+        return max_len
